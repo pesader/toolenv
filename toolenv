@@ -120,8 +120,21 @@ create(){
     fi
 }
 
-# edit(){
-# }
+edit(){
+    # arguments
+    container_name=${1:-$(__get_container_name)}
+    shell=${2:-$(__get_default_shell)}
+
+    # values
+    env_path=$(__get_environment_path $container_name $shell)
+
+    if [[ -z "$EDITOR" ]]; then
+        echo "Error: \$EDITOR environment variable is not set"
+        exit 1
+    else
+        $EDITOR $env_path
+    fi
+}
 
 
 if [[ $1 =~ ^(help|init|create|edit|source|init)$ ]]; then
