@@ -91,16 +91,19 @@ create(){
     # values
     env_path=$(__get_environment_path $container_name $shell)
     env_dir=$(__get_environment_dir $container_name $shell)
-    is_template=false
-    from_template=""
 
-    while (( $# >= 1 )); do 
-        case $1 in
-        --template) is_template=true;;
-        --uglify) uglify=true;;
-        *) break;
-        esac;
-        shift
+    from_template=""
+    while getopts ":t:" opt; do
+        case $opt in
+            t)
+                from_template="$OPTARG"
+                echo "$from_template"
+                echo ""
+                ;;
+            \?)
+                echo "Error: Invalid option: -$OPTARG" >&2
+                ;;
+        esac
     done
 
     if [[ -z "$container_name" ]]; then
