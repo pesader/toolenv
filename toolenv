@@ -105,12 +105,12 @@ create(){
     env_dir=$(__get_environment_dir $toolbx_name)
 
     if [[ -z "$toolbx_name" ]]; then
-        echo "Error: no toolbx specified for the enviroment"
+        echo "Error: no toolbx specified"
         exit 1
     fi
 
     if [[ -z "$shell" ]]; then
-        echo "Error: no shell specified for the enviroment"
+        echo "Error: no shell specified"
         exit 1
     fi
 
@@ -122,7 +122,7 @@ create(){
         touch $env_path
         echo "Created $shell environment for \"$toolbx_name\" toolbx"
     else
-        echo "Error: $shell enviroment for toolbx $toolbx_name already created"
+        echo "Error: $shell enviroment for \"$toolbx_name\" toolbx already created"
         exit 1
     fi
 }
@@ -134,6 +134,16 @@ edit(){
 
     # values
     env_path=$(__get_environment_path $toolbx_name $shell)
+
+    if [[ -z "$toolbx_name" ]]; then
+        echo "Error: no toolbx specified"
+        exit 1
+    fi
+
+    if [[ -z "$shell" ]]; then
+        echo "Error: no shell specified"
+        exit 1
+    fi
 
     if [[ -z "$EDITOR" ]]; then
         echo "Error: \$EDITOR environment variable is not set"
@@ -158,19 +168,21 @@ remove(){
 
     # values
     env_path=$(__get_environment_path $toolbx_name $shell)
+    env_dir=$(__get_environment_dir $toolbx_name)
 
     if [[ -z "$toolbx_name" ]]; then
-        echo "Error: no toolbx specified for the enviroment"
+        echo "Error: no toolbx specified"
         exit 1
     fi
 
     if [[ -z "$shell" ]]; then
-        echo "Error: no shell specified for the enviroment"
+        echo "Error: no shell specified"
         exit 1
     fi
 
     if [[ -f $env_path ]]; then
         rm $env_path
+        rmdir $env_dir
         echo "Removed $shell environment for \"$toolbx_name\" toolbx"
     else
         echo "Error: no $shell enviroment for \"$toolbx_name\" toolbx"
@@ -178,24 +190,7 @@ remove(){
     fi
 }
 
-rm(){
-    # arguments
-    toolbx_name=${1:-$(__get_toolbx_name)}
-    shell=${2:-$(__get_default_shell)}
-
-    remove $1 $2
-}
-
-delete(){
-    # arguments
-    toolbx_name=${1:-$(__get_toolbx_name)}
-    shell=${2:-$(__get_default_shell)}
-
-    remove $1 $2
-}
-
-
-if [[ $1 =~ ^(help|init|source|create|edit|list|remove|rm|delete)$ ]]; then
+if [[ $1 =~ ^(help|init|source|create|edit|list|remove)$ ]]; then
     "$@"
 else
     echo "Invalid subcommand $1" >&2
