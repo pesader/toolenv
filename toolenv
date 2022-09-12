@@ -2,8 +2,6 @@
 
 config_dir=$HOME/.config/toolenv
 
-# help(){
-# }
 
 __inside_toolbx(){
     if [[ -f /run/.containerenv && -f /run/.toolboxenv ]]; then
@@ -13,11 +11,11 @@ __inside_toolbx(){
     fi
 }
 
-__get_container_name(){
+__get_toolbx_name(){
     if __inside_toolbx; then
-        container_name=$(echo $(. /var/run/.containerenv; echo ${name}))
+        toolbx_name=$(echo $(. /var/run/.containerenv; echo ${name}))
     fi
-    echo $container_name
+    echo $toolbx_name
 }
 
 __get_default_shell(){
@@ -29,32 +27,42 @@ __get_default_shell(){
 
 __get_environment_dir(){
     # arguments
-    container_name=${1:-$(__get_container_name)}
-    shell=${2:-$(__get_default_shell)}
+    toolbx_name=${1:-$(__get_toolbx_name)}
 
-    env_path="$config_dir/environments/$container_name/"
+    env_path="$config_dir/$toolbx_name"
     echo $env_path
 }
 
 __get_environment_path(){
     # arguments
-    container_name=${1:-$(__get_container_name)}
+    toolbx_name=${1:-$(__get_toolbx_name)}
     shell=${2:-$(__get_default_shell)}
 
     # values
-    env_dir=$(__get_environment_dir $container_name $shell)
+    env_dir=$(__get_environment_dir $toolbx_name)
 
     env_path="$env_dir/env.$shell"
     echo $env_path
 }
 
-__get_template_path(){
-    # arguments
-    container_name=${1:-$(__get_container_name)}
-    shell=${2:-$default_shell}
-
-    env_path="$config_dir/templates/$container_name/env.$shell"
-    echo $env_path
+help(){
+    echo "toolenv 0.1"
+    echo "A simple utility to customize toolbx environments"
+    echo ""
+    echo "Usage: toolenv [subcommand]"
+    echo "Main subcommands:"
+    echo "    create: creates a toolbx-specific environment file"
+    echo "    edit: opens a toolbx-specific environment file with \$EDITOR"
+    echo "    remove: removes a toolbx-specific environment file"
+    echo "    list: lists all available environments"
+    echo ""
+    echo "To automatically source environments upon entering a toolbx,"
+    echo "you may add to the configuration file of your shell:"
+    echo ""
+    echo "eval \$(toolenv init <shell>"
+    echo ""
+    echo "Get help with each subcommand using the -h flag"
+    echo "like so: toolenv create -h"
 }
 
 init(){
@@ -62,8 +70,8 @@ init(){
     shell=${1:-$(__get_default_shell)}
 
     if __inside_toolbx; then
-        container_name=$(__get_container_name)
-        env_path=$(__get_environment_path $container_name $shell)
+        toolbx_name=$(__get_toolbx_name)
+        env_path=$(__get_environment_path $toolbx_name $shell)
         if [[ -f $env_path ]]; then
             echo "source $env_path"
         fi
@@ -72,28 +80,37 @@ init(){
 
 source(){
     # arguments
-    container_name=${1:-$(__get_container_name)}
+    toolbx_name=${1:-$(__get_toolbx_name)}
     shell=${2:-$(__get_default_shell)}
 
     # values
-    env_path=$(__get_environment_path $container_name $shell)
+    env_path=$(__get_environment_path $toolbx_name $shell)
 
     if [[ -f $env_path ]]; then
         source $env_path
+        echo "Loaded $shell environment for $toolbx_name toolbx"
+    else
+        echo "Error: no $shell environment for toolbx $toolbx_name"
+        exit 1
     fi
 }
 
 create(){
     # arguments
-    container_name=${1:-$(__get_container_name)}
+    toolbx_name=${1:-$(__get_toolbx_name)}
     shell=${2:-$(__get_default_shell)}
 
     # values
-    env_path=$(__get_environment_path $container_name $shell)
-    env_dir=$(__get_environment_dir $container_name $shell)
+    env_path=$(__get_environment_path $toolbx_name $shell)
+    env_dir=$(__get_environment_dir $toolbx_name)
 
-    if [[ -z "$container_name" ]]; then
-        echo "Error: no container specified for the enviroment"
+    if [[ -z "$toolbx_name" ]]; then
+        echo "Error: no toolbx specified for the enviroment"
+        exit 1
+    fi
+
+    if [[ -z "$shell" ]]; then
+        echo "Error: no shell specified for the enviroment"
         exit 1
     fi
 
@@ -103,19 +120,20 @@ create(){
 
     if ! [[ -f $env_path ]]; then
         touch $env_path
+        echo "Created $shell environment for \"$toolbx_name\" toolbx"
     else
-        echo "Error: $shell enviroment for container $container_name already created"
+        echo "Error: $shell enviroment for toolbx $toolbx_name already created"
         exit 1
     fi
 }
 
 edit(){
     # arguments
-    container_name=${1:-$(__get_container_name)}
+    toolbx_name=${1:-$(__get_toolbx_name)}
     shell=${2:-$(__get_default_shell)}
 
     # values
-    env_path=$(__get_environment_path $container_name $shell)
+    env_path=$(__get_environment_path $toolbx_name $shell)
 
     if [[ -z "$EDITOR" ]]; then
         echo "Error: \$EDITOR environment variable is not set"
@@ -125,8 +143,59 @@ edit(){
     fi
 }
 
+list(){
+    for dir in $config_dir/*/ ; do
+        container_name=${dir%*/}
+        echo -n "${container_name##*/}: "
+        find $dir -type f | sed -rn 's|.*/[^/]+\.([^/.]+)$|\1|p' | sort -u | xargs
+    done
+}
 
-if [[ $1 =~ ^(help|init|create|edit|source|init)$ ]]; then
+remove(){
+    # arguments
+    toolbx_name=${1:-$(__get_toolbx_name)}
+    shell=${2:-$(__get_default_shell)}
+
+    # values
+    env_path=$(__get_environment_path $toolbx_name $shell)
+
+    if [[ -z "$toolbx_name" ]]; then
+        echo "Error: no toolbx specified for the enviroment"
+        exit 1
+    fi
+
+    if [[ -z "$shell" ]]; then
+        echo "Error: no shell specified for the enviroment"
+        exit 1
+    fi
+
+    if [[ -f $env_path ]]; then
+        rm $env_path
+        echo "Removed $shell environment for \"$toolbx_name\" toolbx"
+    else
+        echo "Error: no $shell enviroment for \"$toolbx_name\" toolbx"
+        exit 1
+    fi
+}
+
+rm(){
+    # arguments
+    toolbx_name=${1:-$(__get_toolbx_name)}
+    shell=${2:-$(__get_default_shell)}
+
+    remove $1 $2
+}
+
+delete(){
+    # arguments
+    toolbx_name=${1:-$(__get_toolbx_name)}
+    shell=${2:-$(__get_default_shell)}
+
+    remove $1 $2
+}
+
+
+if [[ $1 =~ ^(help|init|source|create|edit|list|remove|rm|delete)$ ]]; then
     "$@"
 else
     echo "Invalid subcommand $1" >&2
