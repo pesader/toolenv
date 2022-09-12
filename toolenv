@@ -145,6 +145,11 @@ edit(){
         exit 1
     fi
 
+    if ! [[ -f $env_path ]]; then
+        echo "Error: no $shell enviroment for \"$toolbx_name\" toolbx"
+        exit 1
+    fi
+
     if [[ -z "$EDITOR" ]]; then
         echo "Error: \$EDITOR environment variable is not set"
         exit 1
