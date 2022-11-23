@@ -86,6 +86,16 @@ source(){
     # values
     env_path=$(__get_environment_path $toolbx_name $shell)
 
+    if [[ -z "$toolbx_name" ]]; then
+        echo "Error: no toolbx specified"
+        exit 1
+    fi
+
+    if [[ -z "$shell" ]]; then
+        echo "Error: no shell specified"
+        exit 1
+    fi
+
     if [[ -f $env_path ]]; then
         source $env_path
         echo "Loaded $shell environment for $toolbx_name toolbx"
