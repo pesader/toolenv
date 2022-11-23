@@ -78,7 +78,7 @@ init(){
     fi
 }
 
-source(){
+enter(){
     # arguments
     toolbx_name=${1:-$(__get_toolbx_name)}
     shell=${2:-$(__get_default_shell)}
@@ -205,7 +205,7 @@ remove(){
     fi
 }
 
-if [[ $1 =~ ^(help|init|source|create|edit|list|remove)$ ]]; then
+if [[ $1 =~ ^(help|init|enter|create|edit|list|remove)$ ]]; then
     "$@"
 else
     echo "Invalid subcommand $1" >&2
