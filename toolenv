@@ -78,33 +78,6 @@ init(){
     fi
 }
 
-enter(){
-    # arguments
-    toolbx_name=${1:-$(__get_toolbx_name)}
-    shell=${2:-$(__get_default_shell)}
-
-    # values
-    env_path=$(__get_environment_path $toolbx_name $shell)
-
-    if [[ -z "$toolbx_name" ]]; then
-        echo "Error: no toolbx specified"
-        exit 1
-    fi
-
-    if [[ -z "$shell" ]]; then
-        echo "Error: no shell specified"
-        exit 1
-    fi
-
-    if [[ -f $env_path ]]; then
-        source $env_path
-        echo "Loaded $shell environment for $toolbx_name toolbx"
-    else
-        echo "Error: no $shell environment for toolbx $toolbx_name"
-        exit 1
-    fi
-}
-
 create(){
     # arguments
     toolbx_name=${1:-$(__get_toolbx_name)}
@@ -205,7 +178,7 @@ remove(){
     fi
 }
 
-if [[ $1 =~ ^(help|init|enter|create|edit|list|remove)$ ]]; then
+if [[ $1 =~ ^(help|init|create|edit|list|remove)$ ]]; then
     "$@"
 else
     echo "Invalid subcommand $1" >&2
