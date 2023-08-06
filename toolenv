@@ -56,11 +56,6 @@ help(){
     echo "    remove: removes a toolbx-specific environment file"
     echo "    list: lists all available environments"
     echo ""
-    echo "To automatically source environments upon entering a toolbx,"
-    echo "you may add to the configuration file of your shell:"
-    echo ""
-    echo "eval \$(toolenv init <shell>"
-    echo ""
     echo "Get help with each subcommand using the -h flag"
     echo "like so: toolenv create -h"
 }
