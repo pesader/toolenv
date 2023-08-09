@@ -38,6 +38,7 @@ jobs:
 
 
   build_rpm:
+    name: Build RPM packages
     runs-on: ubuntu-latest
     needs: create_tarball
     container: fedora:${{ matrix.fedora-version }}
@@ -97,6 +98,7 @@ jobs:
           files: ${{ env.RPM_PACKAGE_PATH }}
 
   build_srpm:
+    name: Build SRPM package
     runs-on: ubuntu-latest
     needs: create_tarball
     container: fedora:39
