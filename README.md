@@ -2,11 +2,11 @@
 
 A simple utility to manage environments within toolbx.
 
-# Installation
+## Installation
 
 RPM packages are available in the [`toolenv-packages`](https://github.com/pesader/toolenv-packages/) repository.
 
-# How to use it
+## How to use it
 
 Toolenv's goal is to make it easy to create and use custom shell configurations (i.e. environments) for specific toolbxes. Here's the step-by-step tutorial:
 
@@ -17,7 +17,7 @@ Toolenv's goal is to make it easy to create and use custom shell configurations 
 
 It also distinguises between different shells (e.g. bash, zsh), so you can have different configurations for each.
 
-# Why use it
+## Why use it
 
 Here are some possible use-cases:
 
@@ -26,7 +26,7 @@ Here are some possible use-cases:
 - Set debugging environment variables in software development toolbxes
 - Change your `$HOME` directory within a toolbx
 
-# License
+## License
 
 This work is licensed under the terms of the GPLv3.
 
