@@ -135,7 +135,7 @@ jobs:
 
       - name: Rename the SRPM package
         run: |
-          mv $(rpm --eval '%{_srcrpmdir}')/${{ env.PACKAGE_NAME }}-${{ env.PACKAGE_VERSION }}-1.fc${{ matrix.fedora-version }}.src.rpm $(rpm --eval '%{_srcrpmdir}')/${{ env.PACKAGE_NAME }}-${{ env.PACKAGE_VERSION }}-1.src.rpm
+          mv $(rpm --eval '%{_srcrpmdir}')/${{ env.PACKAGE_NAME }}-${{ env.PACKAGE_VERSION }}-1.fc39.src.rpm $(rpm --eval '%{_srcrpmdir}')/${{ env.PACKAGE_NAME }}-${{ env.PACKAGE_VERSION }}-1.src.rpm
 
       - name: Set SRPM package path variable
         run: |
