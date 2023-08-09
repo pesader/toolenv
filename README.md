@@ -28,7 +28,7 @@ Here are some possible use-cases:
 
 ## License
 
-This work is licensed under the terms of the GPLv3.
+This work is licensed under the terms of the AGPLv3.
 
 ![](assets/toolenv-toolbx.png)
 
