@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 env:
-  PACKAGE_VERSION: ${{ github.ref_name }}
+  PACKAGE_VERSION: v0.1.1
   PACKAGE_NAME: ${{ github.event.repository.name }}
 
 jobs:
