@@ -1,5 +1,5 @@
 Name:           toolenv
-Version:        0.1.0
+Version:        0.1.1
 Release:        1%{?dist}
 Summary:        A simple utility to manage toolbx environments
 BuildArch:      noarch
