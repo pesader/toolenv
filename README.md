@@ -4,7 +4,24 @@ A simple utility to manage environments within toolbx.
 
 ## Installation
 
-RPM packages are available in the [`toolenv-packages`](https://github.com/pesader/toolenv-packages/) repository.
+### COPR
+
+You can use the provided COPR repository, by running:
+
+```bash
+sudo dnf copr enable pesader/toolenv
+sudo dnf install toolenv
+```
+
+### RPM packages
+
+RPM packages are available under the "Releases" section of the repository.
+Download the package for your version of Fedora and install with the following
+command (e.g. for Fedora Linux 38):
+
+```bash
+sudo dnf install $HOME/Downloads/toolenv-0.1.1-1.fc38.noarch.rpm
+```
 
 ## How to use it
 
