@@ -2,6 +2,8 @@ name: Build RPM packages for toolenv
 
 on:
   push:
+    tags:
+      - "*.*.*"
   workflow_dispatch:
 
 env:
