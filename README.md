@@ -43,9 +43,12 @@ Here are some possible use-cases:
 - Set debugging environment variables in software development toolbxes
 - Change your `$HOME` directory within a toolbx
 
-## License
+## Attribution
 
-This work is licensed under the terms of the AGPLv3.
+The logo of toolenv is inspired by the logo of toolbx, designed by [jimmac](https://github.com/jimmac) (Jakub Steiner). It's a cog the wrench!
 
 ![](assets/toolenv-toolbx.png)
 
+## License
+
+This work is licensed under the terms of the AGPLv3.
