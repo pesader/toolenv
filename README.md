@@ -45,7 +45,7 @@ Here are some possible use-cases:
 
 ## Attribution
 
-The logo of toolenv is inspired by the logo of toolbx, designed by [jimmac](https://github.com/jimmac) (Jakub Steiner). It's a cog the wrench!
+The logo of toolenv is inspired by the logo of toolbx, designed by [jimmac](https://github.com/jimmac) (Jakub Steiner). It's a cog for the wrench!
 
 ![](assets/toolenv-toolbx.png)
 
